@@ -20,7 +20,7 @@ class LogglyException extends Exception {}
 
 class Loggly {
     public $domain = 'loggly.com';
-    public $proxy = 'logs.loggly.com';
+    public $proxy = 'logs-01.loggly.com';
     public $subdomain = '';
     public $username = '';
     public $password  = '';
@@ -67,7 +67,7 @@ class Loggly {
             }
 
         }
-
+	//echo $url;
         curl_setopt($curl, CURLOPT_URL, $url);
 
         # satisfy content length header requirement for PUT
@@ -97,11 +97,11 @@ class Loggly {
     }
 
     public function getInputs() {
-        return $this->makeRequest('/api/inputs');
+        return $this->makeRequest('/apiv2/inputs');
     }
 
     public function getDevices() {
-        return $this->makeRequest('/api/devices');
+        return $this->makeRequest('/apiv2/devices');
     }
 
     # input-related methods
@@ -124,9 +124,14 @@ class Loggly {
 
     # search-related methods
 
+    // fixed
     public function search($q, $params = null) {
         $params['q'] = $q;
-        return $this->makeRequest('/api/search', $params);
+        return $this->makeRequest('/apiv2/search', $params);
+    }
+    // fixed
+    public function events($params = null) {
+        return $this->makeRequest('/apiv2/events', $params);
     }
 
     public function facet($q, $facet = 'date', $params = null) {
